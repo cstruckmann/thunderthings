@@ -38,13 +38,13 @@ browser.menus.create({
     async onclick(info, tab) { processCopyMsgLinkAction(info, tab); },
 });
 
-browser.menus.onShown.addListener((info) => {  
+browser.menus.onShown.addListener((info) => {
     let oneMessage = true;
     if (info.selectedMessages) {
 	// Invoked from a message list, as opposed to a page
 	oneMessage = info.selectedMessages.messages.length == 1;
     }
-    
+
     browser.menus.update("add_to_things", { enabled: oneMessage });
     browser.menus.update("copy_msg_link", { enabled: oneMessage });
     browser.menus.refresh();
@@ -88,7 +88,7 @@ async function processAddToThingsAction(info, tab) {
  * Add an item to Things
  */
 function addToThings(message) {
-    let notes = "[Email](mid:" + message.headerMessageId + ")"
+    let notes = "[🦊](thunderlink://mid:" + message.headerMessageId + ")\n[✉️](message:%3C" + message.headerMessageId + "%3E)"
     browser.runtime.sendNativeMessage(
 	"thunderthings",
 	{ name: message.subject, notes: notes },
@@ -102,7 +102,7 @@ function addToThings(message) {
 		console.log("Messaging host says: ", response);
 	    }
 	});
-    
+
 }
 
 
@@ -147,7 +147,7 @@ function copyAsLink(message) {
 	console.log("ThunderThings: copied msg link to clipboard");
     }, function() {
 	console.log("ThunderThings: failed to copy msg link to clipboard");
-	
+
     });
-    
+
 }
